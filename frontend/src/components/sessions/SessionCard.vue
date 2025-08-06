@@ -82,7 +82,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { CalendarIcon, ClockIcon, CheckIcon } from '@heroicons/vue/24/outline'
-import type { Session } from '@/services/api'
+import type { Session } from '@/types'
 
 interface Props {
   session: Session

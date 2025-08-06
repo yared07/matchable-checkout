@@ -1,17 +1,17 @@
 <template>
-  <div class="card-elevated mb-8 fade-in">
+  <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-8 mb-8 border border-gray-200 shadow-sm">
     <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
       <!-- Filter Title -->
       <div>
-        <h3 class="section-header">Filter Sessions</h3>
-        <p class="section-subtitle">Find the perfect training session for you</p>
+        <h3 class="text-2xl font-bold text-gray-900 mb-2">Filter Sessions</h3>
+        <p class="text-gray-600">Find the perfect training session for you</p>
       </div>
 
       <!-- Clear Filters Button -->
       <button
         v-if="hasActiveFilters"
         @click="clearFilters"
-        class="btn-ghost text-sm"
+        class="btn-ghost text-sm bg-white border border-gray-200 hover:bg-gray-50"
       >
         Clear All Filters
       </button>
@@ -27,7 +27,7 @@
         <select
           v-model="localFilters.type"
           @change="updateFilters"
-          class="input-field"
+          class="input-field bg-white"
         >
           <option value="">All Types</option>
           <option
@@ -48,7 +48,7 @@
         <select
           v-model="localFilters.trainer_id"
           @change="updateFilters"
-          class="input-field"
+          class="input-field bg-white"
         >
           <option :value="null">All Trainers</option>
           <option
@@ -70,7 +70,7 @@
           v-model="localFilters.date_from"
           type="date"
           @change="updateFilters"
-          class="input-field"
+          class="input-field bg-white"
         />
       </div>
 
@@ -82,7 +82,7 @@
           v-model="localFilters.date_to"
           type="date"
           @change="updateFilters"
-          class="input-field"
+          class="input-field bg-white"
         />
       </div>
     </div>
@@ -99,7 +99,7 @@
           placeholder="0"
           min="0"
           @change="updateFilters"
-          class="input-field"
+          class="input-field bg-white"
         />
       </div>
 
@@ -113,13 +113,13 @@
           placeholder="1000"
           min="0"
           @change="updateFilters"
-          class="input-field"
+          class="input-field bg-white"
         />
       </div>
     </div>
 
     <!-- Active Filters Display -->
-    <div v-if="hasActiveFilters" class="mt-8 pt-6 border-t border-gray-100">
+    <div v-if="hasActiveFilters" class="mt-8 pt-6 border-t border-gray-200">
       <h4 class="text-sm font-bold text-gray-700 mb-4">Active Filters:</h4>
       <div class="flex flex-wrap gap-3">
         <span
@@ -170,16 +170,10 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
+import type { Filters } from '@/types'
 
 interface Props {
-  filters: {
-    type: string
-    trainer_id: number | null
-    date_from: string
-    date_to: string
-    min_price: number | null
-    max_price: number | null
-  }
+  filters: Filters
   availableTypes: string[]
   availableTrainers: Array<{
     id: number
@@ -191,7 +185,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const emit = defineEmits<{
-  'update-filters': [filters: Props['filters']]
+  'update-filters': [filters: Filters]
   'clear-filters': []
 }>()
 

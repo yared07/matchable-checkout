@@ -1,4 +1,15 @@
 import axios from 'axios'
+import type { 
+  Trainer, 
+  Session, 
+  BookingRequest, 
+  Booking, 
+  CalculateTotalRequest, 
+  CalculateTotalResponse, 
+  ApiResponse, 
+  SessionsResponse, 
+  SessionsApiResponse 
+} from '@/types'
 
 // API Configuration
 const API_BASE_URL = 'http://127.0.0.1:8000/api'
@@ -16,11 +27,9 @@ const apiClient = axios.create({
 // Request interceptor for logging
 apiClient.interceptors.request.use(
   (config) => {
-    console.log(`🚀 API Request: ${config.method?.toUpperCase()} ${config.url}`)
     return config
   },
   (error) => {
-    console.error('❌ API Request Error:', error)
     return Promise.reject(error)
   }
 )
@@ -28,117 +37,12 @@ apiClient.interceptors.request.use(
 // Response interceptor for error handling
 apiClient.interceptors.response.use(
   (response) => {
-    console.log(`✅ API Response: ${response.status} ${response.config.url}`)
-    console.log('Response data:', response.data)
     return response
   },
   (error) => {
-    console.error('❌ API Response Error:', error.response?.data || error.message)
     return Promise.reject(error)
   }
 )
-
-// Types
-export interface Trainer {
-  id: number
-  name: string
-  email: string
-  phone: string
-  specializations: string[]
-  bio: string
-  is_active: boolean
-}
-
-export interface Session {
-  id: number
-  trainer_id: number
-  type: 'padel' | 'fitness' | 'tennis'
-  start_time: string
-  end_time: string
-  duration_minutes: number
-  price: string
-  max_participants: number
-  current_participants: number
-  status: 'available' | 'booked' | 'cancelled'
-  description: string
-  trainer: Trainer
-}
-
-export interface BookingRequest {
-  customer_name: string
-  customer_email: string
-  customer_phone: string
-  session_ids: number[]
-  terms_accepted: boolean
-  notes?: string
-}
-
-export interface Booking {
-  id: number
-  booking_number: string
-  customer_name: string
-  customer_email: string
-  customer_phone: string
-  selected_sessions: number[]
-  total_amount: string
-  status: 'pending' | 'confirmed' | 'cancelled'
-  notes?: string
-  terms_accepted: boolean
-  sessions: Session[]
-  created_at: string
-  updated_at: string
-}
-
-export interface CalculateTotalRequest {
-  session_ids: number[]
-}
-
-export interface CalculateTotalResponse {
-  total: string
-  breakdown: Array<{
-    id: number
-    type: string
-    trainer: string
-    start_time: string
-    duration_minutes: number
-    price: string
-  }>
-  session_count: number
-}
-
-export interface ApiResponse<T> {
-  success: boolean
-  data: T
-  message?: string
-}
-
-export interface SessionsResponse {
-  data: Session[]
-  current_page: number
-  per_page: number
-  total: number
-  first_page_url: string
-  last_page_url: string
-  links: Array<{
-    url: string | null
-    label: string
-    active: boolean
-  }>
-}
-
-export interface SessionsApiResponse {
-  success: boolean
-  data: SessionsResponse
-  filters: {
-    types: string[]
-    trainers: Array<{
-      id: number
-      name: string
-      specializations: string[]
-    }>
-  }
-  message?: string
-}
 
 // API Service Class
 export class ApiService {
@@ -152,9 +56,7 @@ export class ApiService {
     max_price?: number
     page?: number
   }): Promise<SessionsApiResponse> {
-    console.log('🔍 Fetching sessions with params:', params)
     const response = await apiClient.get('/sessions', { params })
-    console.log('📦 Raw API response:', response.data)
     return response.data
   }
 

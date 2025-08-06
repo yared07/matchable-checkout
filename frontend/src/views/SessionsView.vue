@@ -22,10 +22,6 @@
                   <p class="text-2xl font-bold text-white">
                     Total: ${{ bookingStore.totalAmount.toFixed(2) }}
                   </p>
-                  <!-- Debug info -->
-                  <p class="text-xs text-gray-400 mt-1">
-                    Debug: {{ bookingStore.selectedSessions.length }} sessions, ${{ bookingStore.totalAmount }}
-                  </p>
                 </div>
                 <button
                   v-if="bookingStore.selectedSessions.length > 0"
@@ -78,13 +74,6 @@
 
       <!-- Sessions Grid -->
       <div v-else-if="bookingStore.sessions.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
-        <!-- Debug Info -->
-        <div class="col-span-full mb-4 p-4 bg-blue-50 rounded-lg">
-          <p class="text-sm text-blue-800">
-            🎉 <strong>{{ bookingStore.sessions.length }}</strong> sessions loaded successfully!
-          </p>
-        </div>
-        
         <SessionCard
           v-for="session in bookingStore.sessions"
           :key="session.id"
@@ -172,7 +161,6 @@ const proceedToBooking = () => {
 
 // Lifecycle
 onMounted(() => {
-  console.log('SessionsView mounted, fetching sessions...')
   bookingStore.fetchSessions()
 })
 </script> 

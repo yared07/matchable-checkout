@@ -1,28 +1,19 @@
-# Matchable Checkout Frontend
+# Vue.js Frontend
 
-A professional Vue.js 3 frontend for the Matchable training session booking system. Built with modern technologies and best practices.
+Professional Vue.js frontend for the Matchable Checkout System, providing a modern and responsive user interface for booking personal training sessions.
 
-## 🚀 Features
+## Features
 
-### ✅ Core Features Implemented
-- **Session Selection**: Browse and select training sessions (padel, fitness, tennis)
+- **Session Selection**: Browse and select training sessions with real-time filtering
 - **Advanced Filtering**: Filter by session type, trainer, date range, and price
 - **Real-time Cart**: Live cart updates with session selection/deselection
-- **Professional Booking Form**: Complete customer information collection
+- **Professional Booking Form**: Complete customer information collection with validation
 - **Responsive Design**: Mobile-first design with TailwindCSS v4
 - **State Management**: Pinia store for centralized state management
 - **TypeScript**: Full TypeScript support for type safety
-- **API Integration**: Professional API service with error handling
+- **API Integration**: Professional API service with comprehensive error handling
 
-### 🎨 UI/UX Features
-- **Modern Design**: Clean, professional interface with smooth animations
-- **Loading States**: Professional loading spinners and skeleton screens
-- **Error Handling**: Comprehensive error display and recovery
-- **Form Validation**: Real-time validation with user feedback
-- **Responsive Layout**: Optimized for desktop, tablet, and mobile
-- **Accessibility**: ARIA labels and keyboard navigation support
-
-## 🛠️ Technology Stack
+## Technology Stack
 
 - **Vue.js 3** - Progressive JavaScript framework
 - **TypeScript** - Type-safe JavaScript
@@ -31,13 +22,44 @@ A professional Vue.js 3 frontend for the Matchable training session booking syst
 - **Vue Router** - Client-side routing
 - **Axios** - HTTP client for API calls
 - **Heroicons** - Beautiful SVG icons
-- **HeadlessUI** - Unstyled, accessible UI components
-- **VueUse** - Vue composition utilities
+- **Vite** - Fast build tool and development server
 
-## 📦 Installation
+## Project Structure
+
+```
+frontend/src/
+├── components/
+│   ├── sessions/
+│   │   ├── SessionCard.vue      # Individual session display
+│   │   └── SessionFilters.vue   # Filter controls
+│   └── ui/
+│       └── LoadingSpinner.vue   # Loading component
+├── services/
+│   └── api.ts                   # API service layer
+├── stores/
+│   └── booking.ts               # Pinia store
+├── types/
+│   └── index.ts                 # TypeScript type definitions
+├── views/
+│   ├── SessionsView.vue         # Main sessions page
+│   └── BookingView.vue          # Booking form
+├── router/
+│   └── index.ts                 # Vue Router configuration
+└── assets/
+    └── main.css                 # Global styles and TailwindCSS
+```
+
+## Installation
+
+### Prerequisites
+- Node.js 18+ and npm
+- Backend API running on port 8000
+
+### Setup Steps
 
 1. **Install Dependencies**
    ```bash
+   cd frontend
    npm install
    ```
 
@@ -46,51 +68,11 @@ A professional Vue.js 3 frontend for the Matchable training session booking syst
    npm run dev
    ```
 
-3. **Build for Production**
-   ```bash
-   npm run build
-   ```
+3. **Access Application**
+   - Frontend: `http://localhost:5173`
+   - Backend API: `http://127.0.0.1:8000/api`
 
-## 🔧 Configuration
-
-### Environment Variables
-Create a `.env` file in the frontend directory:
-
-```env
-VITE_API_BASE_URL=http://127.0.0.1:8000/api
-VITE_APP_TITLE=Matchable Checkout
-```
-
-### API Configuration
-The frontend is configured to connect to the Laravel backend at `http://127.0.0.1:8000/api`. Make sure the backend is running before testing the frontend.
-
-## 📁 Project Structure
-
-```
-frontend/
-├── src/
-│   ├── components/
-│   │   ├── sessions/
-│   │   │   ├── SessionCard.vue      # Individual session display
-│   │   │   └── SessionFilters.vue   # Filter controls
-│   │   └── ui/
-│   │       └── LoadingSpinner.vue   # Loading component
-│   ├── services/
-│   │   └── api.ts                   # API service layer
-│   ├── stores/
-│   │   └── booking.ts               # Pinia store
-│   ├── views/
-│   │   ├── SessionsView.vue         # Main sessions page
-│   │   └── BookingView.vue          # Booking form
-│   ├── router/
-│   │   └── index.ts                 # Vue Router configuration
-│   └── assets/
-│       └── main.css                 # Global styles with TailwindCSS
-├── public/
-└── package.json
-```
-
-## 🎯 Key Components
+## Key Components
 
 ### SessionCard.vue
 Professional session display component with:
@@ -99,6 +81,7 @@ Professional session display component with:
 - Time and duration display
 - Price and availability status
 - Add/remove from cart functionality
+- Modern glass morphism design
 
 ### SessionFilters.vue
 Advanced filtering component with:
@@ -108,6 +91,7 @@ Advanced filtering component with:
 - Price range inputs
 - Active filter display
 - Clear filters functionality
+- Creative floating design elements
 
 ### BookingView.vue
 Complete booking form with:
@@ -116,95 +100,213 @@ Complete booking form with:
 - Terms and conditions checkbox
 - Order summary sidebar
 - Responsive layout
+- Professional error handling
 
-## 🔌 API Integration
+### LoadingSpinner.vue
+Reusable loading component with:
+- Custom spinner animation
+- Configurable text
+- Professional styling
+- Responsive design
 
-The frontend integrates with the Laravel backend through a professional API service:
+## State Management
 
-### API Endpoints Used
-- `GET /api/sessions` - Fetch available sessions with filtering
+### Pinia Store (booking.ts)
+Centralized state management with:
+- Session data and filtering
+- Cart management
+- API integration
+- Error handling
+- Loading states
+
+### Key State Properties
+- `sessions` - Available sessions
+- `selectedSessions` - Cart items
+- `filters` - Active filters
+- `loading` - Loading states
+- `error` - Error handling
+
+### Key Actions
+- `fetchSessions()` - Load sessions from API
+- `toggleSessionSelection()` - Add/remove from cart
+- `updateFilters()` - Apply filters
+- `createBooking()` - Submit booking
+- `clearSelection()` - Clear cart
+
+## API Integration
+
+### API Service (api.ts)
+Professional API service with:
+- Axios configuration
+- Request/response interceptors
+- Error handling
+- TypeScript interfaces
+- Base URL configuration
+
+### Endpoints Used
+- `GET /api/sessions` - Fetch available sessions
 - `POST /api/bookings` - Create new booking
-- `POST /api/bookings/calculate-total` - Calculate session totals
+- `POST /api/bookings/calculate-total` - Calculate totals
 
 ### Error Handling
-- Comprehensive error display
 - Network error recovery
-- Validation error handling
+- Validation error display
 - User-friendly error messages
+- Loading state management
 
-## 🎨 Styling
+## Styling
 
 ### TailwindCSS v4
-- Latest version with `@import "tailwindcss"` syntax
-- Custom color palette and animations
-- Responsive design utilities
-- Component-based styling
+Modern utility-first CSS with:
+- Custom component classes
+- Responsive design
+- Dark/light theme support
+- Professional color palette
+- Smooth animations
 
-### Custom Components
-- `.btn-primary` - Primary action buttons
-- `.btn-secondary` - Secondary action buttons
-- `.card` - Content containers
+### Design System
+- Glass morphism effects
+- Gradient backgrounds
+- Floating animations
+- Professional typography
+- Consistent spacing
+
+### Custom Classes
+- `.btn-primary` - Primary buttons
+- `.card-elevated` - Elevated cards
 - `.input-field` - Form inputs
-- `.badge` - Status indicators
+- `.badge` - Status badges
+- `.spinner` - Loading spinners
 
-## 🚀 Development
+## Development
 
 ### Available Scripts
 ```bash
 npm run dev          # Start development server
 npm run build        # Build for production
 npm run preview      # Preview production build
-npm run format       # Format code with Prettier
-npm run lint         # Lint code with ESLint
+npm run lint         # Lint code
+npm run type-check   # TypeScript type checking
 ```
 
 ### Development Workflow
-1. Start the Laravel backend: `cd backend && php artisan serve`
-2. Start the Vue frontend: `npm run dev`
-3. Access the application at `http://localhost:5173`
+1. Start backend server
+2. Start frontend development server
+3. Access application at `http://localhost:5173`
+4. Make changes and see hot reload
+5. Test API integration
 
-## 🧪 Testing
+### Code Quality
+- TypeScript for type safety
+- ESLint for code linting
+- Prettier for code formatting
+- Vue DevTools for debugging
 
-The frontend includes comprehensive error handling and validation:
-- Form validation with real-time feedback
-- API error handling with user-friendly messages
-- Network error recovery
-- Loading state management
+## Responsive Design
 
-## 📱 Responsive Design
+### Breakpoints
+- Mobile: 320px - 768px
+- Tablet: 768px - 1024px
+- Desktop: 1024px+
 
-The application is fully responsive with:
-- Mobile-first design approach
-- Tablet and desktop optimizations
-- Touch-friendly interface
-- Adaptive layouts
+### Mobile-First Approach
+- Touch-friendly interfaces
+- Optimized for mobile performance
+- Responsive grid layouts
+- Accessible navigation
 
-## 🔒 Security Features
+## Performance
 
-- Input validation and sanitization
-- CORS configuration for API calls
-- Secure form submission
-- XSS protection through Vue's built-in escaping
-
-## 🚀 Performance
-
-- Lazy-loaded components
-- Optimized bundle size
+### Optimizations
+- Code splitting with Vite
+- Lazy loading of components
+- Optimized images and assets
 - Efficient state management
-- Minimal API calls with caching
+- Minimal bundle size
 
-## 📚 Documentation
+### Loading States
+- Skeleton screens
+- Progressive loading
+- Smooth transitions
+- User feedback
 
-For more information about the backend API, see the `backend/API_DOCUMENTATION.md` file.
+## Testing
 
-## 🤝 Contributing
+### Manual Testing
+- Session selection and filtering
+- Cart functionality
+- Form validation
+- API integration
+- Responsive design
 
-1. Follow the existing code style
-2. Add TypeScript types for new features
-3. Include error handling for API calls
-4. Test on multiple screen sizes
-5. Ensure accessibility compliance
+### Browser Compatibility
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+
+## Deployment
+
+### Production Build
+```bash
+npm run build
+```
+
+### Build Output
+- Optimized JavaScript bundles
+- Minified CSS
+- Compressed assets
+- Static file serving
+
+### Deployment Options
+- Vercel
+- Netlify
+- GitHub Pages
+- Traditional hosting
+
+## Troubleshooting
+
+### Common Issues
+
+1. **API Connection Issues**
+   - Verify backend is running on port 8000
+   - Check CORS configuration
+   - Verify API_BASE_URL in configuration
+
+2. **Build Errors**
+   - Clear node_modules and reinstall
+   - Check TypeScript errors
+   - Verify TailwindCSS configuration
+
+3. **Hot Reload Issues**
+   - Restart development server
+   - Clear browser cache
+   - Check file permissions
+
+4. **TypeScript Errors**
+   - Run `npm run type-check`
+   - Check type definitions
+   - Verify imports
+
+## Future Enhancements
+
+- **Unit Testing**: Jest and Vue Test Utils
+- **E2E Testing**: Cypress or Playwright
+- **PWA Support**: Service workers and offline functionality
+- **Internationalization**: Multi-language support
+- **Advanced Animations**: Framer Motion integration
+- **Real-time Updates**: WebSocket integration
+- **Performance Monitoring**: Analytics and error tracking
+- **Accessibility**: ARIA improvements and screen reader support
+
+## Support
+
+For technical support or questions:
+- Check the troubleshooting section
+- Review Vue.js documentation
+- Check browser console for errors
+- Verify API responses
 
 ---
 
-**Status**: Frontend implementation complete and ready for production! 🎉
+**Status**: Production-ready Vue.js frontend with modern architecture and professional design.

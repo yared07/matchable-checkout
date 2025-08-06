@@ -1,88 +1,90 @@
-# Matchable Checkout Backend API
+# Laravel Backend API
 
-A Laravel-based REST API for the Matchable checkout system that handles session booking for padel, fitness, and tennis training.
+Professional Laravel backend for the Matchable Checkout System, providing RESTful API endpoints for session management and booking functionality.
 
 ## Features
 
 - **Session Management**: CRUD operations for training sessions
-- **Trainer Management**: Trainer profiles with specializations
-- **Booking System**: Complete booking flow with validation
-- **Real-time Pricing**: Dynamic calculation of session costs
-- **Availability Tracking**: Automatic session availability updates
-- **CORS Support**: Cross-origin request handling for frontend integration
+- **Booking System**: Complete booking workflow with validation
+- **Trainer Management**: Trainer profiles and specializations
+- **Real-time Calculations**: Dynamic pricing and availability
+- **Data Validation**: Comprehensive input validation
+- **CORS Support**: Cross-origin request handling
+- **Database Seeding**: Sample data for development
 
 ## Database Schema
 
-### Tables
+### Core Tables
 
-1. **trainers**
-   - `id` (Primary Key)
-   - `name` (string)
-   - `email` (string, unique)
-   - `phone` (string)
-   - `specializations` (json array)
-   - `bio` (text, nullable)
-   - `is_active` (boolean)
-   - `created_at`, `updated_at`
+#### trainers
+- `id` - Primary key
+- `name` - Trainer full name
+- `email` - Unique email address
+- `phone` - Contact phone number
+- `specializations` - JSON array of specializations
+- `bio` - Trainer biography
+- `is_active` - Active status boolean
+- `created_at`, `updated_at` - Timestamps
 
-2. **sessions**
-   - `id` (Primary Key)
-   - `trainer_id` (Foreign Key)
-   - `type` (enum: padel, fitness, tennis)
-   - `start_time` (datetime)
-   - `end_time` (datetime)
-   - `duration_minutes` (integer)
-   - `price` (decimal)
-   - `max_participants` (integer)
-   - `current_participants` (integer)
-   - `status` (enum: available, booked, cancelled)
-   - `description` (text, nullable)
-   - `created_at`, `updated_at`
+#### sessions
+- `id` - Primary key
+- `trainer_id` - Foreign key to trainers
+- `type` - Session type (padel, fitness, tennis)
+- `start_time` - Session start datetime
+- `end_time` - Session end datetime
+- `duration_minutes` - Session duration
+- `price` - Session price (decimal)
+- `max_participants` - Maximum participants
+- `current_participants` - Current participants
+- `status` - Session status (available, booked, cancelled)
+- `description` - Session description
+- `created_at`, `updated_at` - Timestamps
 
-3. **bookings**
-   - `id` (Primary Key)
-   - `booking_number` (string, unique)
-   - `customer_name` (string)
-   - `customer_email` (string)
-   - `customer_phone` (string)
-   - `selected_sessions` (json array)
-   - `total_amount` (decimal)
-   - `status` (enum: pending, confirmed, cancelled)
-   - `notes` (text, nullable)
-   - `terms_accepted` (boolean)
-   - `created_at`, `updated_at`
+#### bookings
+- `id` - Primary key
+- `booking_number` - Unique booking number
+- `customer_name` - Customer full name
+- `customer_email` - Customer email
+- `customer_phone` - Customer phone
+- `selected_sessions` - JSON array of session IDs
+- `total_amount` - Total booking amount
+- `status` - Booking status (pending, confirmed, cancelled)
+- `notes` - Additional notes
+- `terms_accepted` - Terms acceptance boolean
+- `created_at`, `updated_at` - Timestamps
 
-4. **booking_session** (Pivot Table)
-   - `id` (Primary Key)
-   - `booking_id` (Foreign Key)
-   - `session_id` (Foreign Key)
-   - `price_paid` (decimal)
-   - `created_at`, `updated_at`
+#### booking_session (Pivot Table)
+- `id` - Primary key
+- `booking_id` - Foreign key to bookings
+- `session_id` - Foreign key to sessions
+- `price_paid` - Price paid for this session
+- `created_at`, `updated_at` - Timestamps
 
 ## API Endpoints
 
 ### Sessions
 
 #### GET /api/sessions
-Get all available sessions with optional filtering.
+Retrieve available sessions with filtering and pagination.
 
 **Query Parameters:**
-- `type` (optional): Filter by session type (padel, fitness, tennis)
-- `trainer_id` (optional): Filter by trainer
-- `date_from` (optional): Filter by start date
-- `date_to` (optional): Filter by end date
-- `min_price` (optional): Filter by minimum price
-- `max_price` (optional): Filter by maximum price
+- `type` - Filter by session type (padel, fitness, tennis)
+- `trainer_id` - Filter by trainer ID
+- `date_from` - Filter by start date (YYYY-MM-DD)
+- `date_to` - Filter by end date (YYYY-MM-DD)
+- `min_price` - Minimum price filter
+- `max_price` - Maximum price filter
+- `page` - Page number for pagination
 
 **Response:**
 ```json
 {
   "success": true,
   "data": {
-    "data": [...],
     "current_page": 1,
+    "data": [...],
     "per_page": 20,
-    "total": 100
+    "total": 87
   },
   "filters": {
     "types": ["padel", "fitness", "tennis"],
@@ -92,13 +94,13 @@ Get all available sessions with optional filtering.
 ```
 
 #### GET /api/sessions/{id}
-Get a specific session by ID.
+Retrieve a specific session by ID.
 
 #### GET /api/sessions/trainers
 Get trainers filtered by session type.
 
 **Query Parameters:**
-- `type` (required): Session type (padel, fitness, tennis)
+- `type` - Session type to filter trainers
 
 ### Bookings
 
@@ -121,23 +123,22 @@ Create a new booking.
 ```json
 {
   "success": true,
-  "message": "Booking created successfully",
   "data": {
     "id": 1,
-    "booking_number": "BK-ABC12345",
+    "booking_number": "BK-2024-001",
     "customer_name": "John Doe",
-    "total_amount": "180.00",
-    "status": "confirmed",
+    "total_amount": "150.00",
+    "status": "pending",
     "sessions": [...]
   }
 }
 ```
 
 #### GET /api/bookings/{id}
-Get a specific booking by ID.
+Retrieve a specific booking by ID.
 
 #### POST /api/bookings/calculate-total
-Calculate total cost for selected sessions.
+Calculate total for selected sessions.
 
 **Request Body:**
 ```json
@@ -151,204 +152,210 @@ Calculate total cost for selected sessions.
 {
   "success": true,
   "data": {
-    "total": "180.00",
+    "total": "150.00",
     "breakdown": [...],
     "session_count": 3
   }
 }
 ```
 
-## Installation & Setup
+## Installation
 
 ### Prerequisites
-- PHP 8.1+
+- PHP 8.1 or higher
 - Composer
-- SQLite (or MySQL/PostgreSQL)
+- SQLite (for development) or MySQL/PostgreSQL
 
-### Installation Steps
+### Setup Steps
 
-1. **Clone and install dependencies:**
+1. **Clone and Install Dependencies**
    ```bash
    cd backend
    composer install
    ```
 
-2. **Environment setup:**
+2. **Environment Configuration**
    ```bash
    cp .env.example .env
    php artisan key:generate
    ```
 
-3. **Database setup:**
+3. **Database Setup**
    ```bash
    php artisan migrate
    php artisan db:seed
    ```
 
-4. **Start the server:**
-   
-   **Option 1: Development Mode (Interactive)**
+4. **Start Development Server**
    ```bash
+   # Interactive mode
    DISPLAY= php artisan serve --host=127.0.0.1 --port=8000
-   ```
    
-   **Option 2: Background Mode (Recommended for Testing)**
-   ```bash
+   # Background mode
    nohup php artisan serve --host=127.0.0.1 --port=8000 > server.log 2>&1 &
    ```
 
-### Environment Variables
-
-Create a `.env` file with the following variables:
+## Environment Variables
 
 ```env
-APP_NAME="Matchable Checkout API"
+APP_NAME="Matchable Checkout"
 APP_ENV=local
 APP_KEY=base64:your-key-here
 APP_DEBUG=true
 APP_URL=http://localhost:8000
 
 DB_CONNECTION=sqlite
-DB_DATABASE=database/database.sqlite
+DB_DATABASE=/path/to/database.sqlite
 
-CACHE_DRIVER=file
-SESSION_DRIVER=file
-QUEUE_CONNECTION=sync
+CORS_ALLOWED_ORIGINS=http://localhost:5173
 ```
 
-## Server Management
+## Testing
 
-### Starting the Server
-
-**For Development:**
-```bash
-# Interactive mode (press Ctrl+C to stop)
-DISPLAY= php artisan serve --host=127.0.0.1 --port=8000
-```
-
-**For Background Testing:**
-```bash
-# Start in background
-nohup php artisan serve --host=127.0.0.1 --port=8000 > server.log 2>&1 &
-
-# Check if running
-ps aux | grep "php artisan serve"
-
-# View logs
-tail -f server.log
-```
-
-### Stopping the Server
-
-**If running in background:**
-```bash
-# Find the process
-ps aux | grep "php artisan serve"
-
-# Kill the process (replace PID with actual process ID)
-kill <PID>
-```
-
-### Testing the API
-
-**Quick Test:**
+### API Testing
 ```bash
 # Test sessions endpoint
 curl http://127.0.0.1:8000/api/sessions
 
-# Test booking calculation
-curl -X POST http://127.0.0.1:8000/api/bookings/calculate-total \
+# Test booking creation
+curl -X POST http://127.0.0.1:8000/api/bookings \
   -H "Content-Type: application/json" \
-  -d '{"session_ids": [1, 2, 3]}'
+  -d '{
+    "customer_name": "Test User",
+    "customer_email": "test@example.com",
+    "customer_phone": "+1234567890",
+    "session_ids": [1],
+    "terms_accepted": true
+  }'
 ```
 
-**Run the test script:**
-```bash
-php test_api.php
+### Sample Data
+The seeder creates:
+- 5 professional trainers with different specializations
+- 70+ training sessions over 7 days
+- Realistic pricing ($40-$100 per session)
+- Multiple session types (padel, tennis, fitness)
+
+## Error Handling
+
+### Validation Errors
+```json
+{
+  "success": false,
+  "message": "Validation failed",
+  "errors": {
+    "customer_email": ["The customer email field is required."]
+  }
+}
 ```
+
+### API Errors
+```json
+{
+  "success": false,
+  "message": "Session not found"
+}
+```
+
+## Security Features
+
+- **Input Validation**: Comprehensive validation rules
+- **CORS Protection**: Configured for frontend integration
+- **SQL Injection Protection**: Eloquent ORM with parameter binding
+- **XSS Protection**: Output sanitization
+- **CSRF Protection**: Enabled for web routes
+
+## Performance Optimizations
+
+- **Database Indexing**: Optimized queries with proper indexes
+- **Eager Loading**: Prevents N+1 query problems
+- **Pagination**: Efficient data loading
+- **Caching**: Ready for Redis/Memcached integration
+
+## Development Workflow
+
+### Code Quality
+```bash
+# Run PHP CS Fixer
+./vendor/bin/php-cs-fixer fix
+
+# Run PHPStan
+./vendor/bin/phpstan analyse
+
+# Run Tests
+php artisan test
+```
+
+### Database Management
+```bash
+# Reset database with fresh data
+php artisan migrate:fresh --seed
+
+# Create new migration
+php artisan make:migration create_new_table
+
+# Rollback migrations
+php artisan migrate:rollback
+```
+
+## Deployment
+
+### Production Checklist
+- [ ] Set `APP_ENV=production`
+- [ ] Set `APP_DEBUG=false`
+- [ ] Configure production database
+- [ ] Set up proper CORS origins
+- [ ] Configure logging
+- [ ] Set up SSL certificates
+- [ ] Configure caching (Redis/Memcached)
+
+### Server Requirements
+- PHP 8.1+
+- Composer
+- Web server (Apache/Nginx)
+- Database (MySQL/PostgreSQL)
+- SSL certificate (recommended)
 
 ## Troubleshooting
 
 ### Common Issues
 
 1. **"Missing X server or $DISPLAY" Error**
-   - **Solution**: Use `DISPLAY=` prefix when starting the server
-   - **Example**: `DISPLAY= php artisan serve --host=127.0.0.1 --port=8000`
+   - Use `DISPLAY=` prefix when starting server
+   - Example: `DISPLAY= php artisan serve`
 
-2. **"Could not open input file: artisan" Error**
-   - **Solution**: Make sure you're in the backend directory
-   - **Fix**: `cd backend` before running artisan commands
+2. **Database Connection Issues**
+   - Check database file permissions
+   - Verify database path in `.env`
+   - Run `php artisan migrate:fresh`
 
-3. **Port Already in Use**
-   - **Solution**: Use a different port or kill existing process
-   - **Example**: `php artisan serve --host=127.0.0.1 --port=8001`
+3. **CORS Issues**
+   - Verify `CORS_ALLOWED_ORIGINS` in `.env`
+   - Check frontend URL configuration
 
-4. **Database Connection Issues**
-   - **Solution**: Ensure SQLite file exists and is writable
-   - **Fix**: `touch database/database.sqlite && chmod 666 database/database.sqlite`
-
-### Server Status Check
-
-```bash
-# Check if server is running
-curl -I http://127.0.0.1:8000/api/sessions
-
-# Check process
-ps aux | grep "php artisan serve"
-
-# Check logs
-tail -f server.log
-```
-
-## Testing
-
-Run the test script to verify API functionality:
-
-```bash
-php test_api.php
-```
-
-## Sample Data
-
-The seeder creates:
-- 5 trainers with different specializations
-- 70+ sessions over the next 7 days
-- Various session types and pricing
-
-## Error Handling
-
-The API returns consistent error responses:
-
-```json
-{
-  "success": false,
-  "message": "Error description",
-  "errors": {
-    "field": ["validation error"]
-  }
-}
-```
-
-## Security Features
-
-- Input validation on all endpoints
-- SQL injection protection via Eloquent ORM
-- CORS middleware for frontend integration
-- Transaction-based booking operations
-- Automatic session availability updates
-
-## Performance Optimizations
-
-- Database indexes on frequently queried fields
-- Eager loading of relationships
-- Pagination for large datasets
-- Efficient session filtering
+4. **Port Already in Use**
+   - Kill existing process: `pkill -f "php artisan serve"`
+   - Use different port: `php artisan serve --port=8001`
 
 ## Future Enhancements
 
-- Email notifications for bookings
-- Payment gateway integration
-- Advanced availability management
-- User authentication and authorization
-- Booking cancellation and rescheduling
-- Session reviews and ratings
+- **Email Notifications**: Booking confirmations and reminders
+- **Payment Integration**: Stripe/PayPal integration
+- **Advanced Filtering**: More sophisticated search options
+- **Real-time Updates**: WebSocket integration
+- **Analytics**: Booking analytics and reporting
+- **Multi-tenancy**: Support for multiple venues
+- **Mobile API**: Dedicated mobile endpoints
+- **Webhooks**: Third-party integrations
+
+## Support
+
+For technical support or questions:
+- Check the troubleshooting section
+- Review Laravel documentation
+- Check server logs: `tail -f server.log`
+- Verify API responses with curl commands
+
+---
+
+**Status**: Production-ready Laravel backend with comprehensive API and documentation.

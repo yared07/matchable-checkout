@@ -1,0 +1,87 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Environment files
+.env
+.env.local
+.env.testing
+.env.staging
+.env.production
+
+# Logs
+*.log
+logs/
+server.log
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+database/database.sqlite
+
+# Cache
+*.cache
+.cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Test files
+test_*.php
+*_test.php
+coverage/
+
+# Build files
+dist/
+build/
+public/build/
+
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Coverage reports
+*.lcov
+
+# Backup files
+*.backup
+*.bak
+*.old
+
+# Local development
+docker-compose.override.yml
+docker-compose.local.yml
+
+# Laravel specific (if any)
+storage/logs/*
+storage/framework/cache/data/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/app/public/*
+public/storage
+
+# Composer
+composer.phar
+/vendor/
+
+# IDE
+.fleet/
+.idea/
+.vscode/ 

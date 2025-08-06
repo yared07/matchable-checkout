@@ -29,9 +29,9 @@
           <div class="card-elevated">
             <h2 class="text-2xl font-bold text-gray-900 mb-8">Your Information</h2>
             
-            <form @submit.prevent="submitBooking" class="space-y-8">
+            <form @submit.prevent="submitBooking" class="space-y-12">
               <!-- Personal Information -->
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
                   <label class="block text-sm font-bold text-gray-700 mb-3">
                     Full Name *
@@ -125,21 +125,21 @@
               <div
                 v-for="session in selectedSessions"
                 :key="session.id"
-                class="flex items-center space-x-4 p-4 bg-gray-50 rounded-xl border border-gray-100"
+                class="flex items-center space-x-6 p-4 bg-gray-50 rounded-xl border border-gray-100"
               >
-                <div class="w-10 h-10 bg-black rounded-full flex items-center justify-center">
+                <div class="w-12 h-12 bg-black rounded-full flex items-center justify-center flex-shrink-0">
                   <span class="text-white font-bold text-sm">
                     {{ session.type.charAt(0).toUpperCase() }}
                   </span>
                 </div>
-                <div class="flex-1">
-                  <h4 class="font-bold text-gray-900">{{ session.type }} Session</h4>
-                  <p class="text-sm text-gray-600 font-medium">{{ session.trainer.name }}</p>
+                <div class="flex-1 min-w-0">
+                  <h4 class="font-bold text-gray-900 mb-1">{{ session.type }} Session</h4>
+                  <p class="text-sm text-gray-600 font-medium mb-1">{{ session.trainer.name }}</p>
                   <p class="text-sm text-gray-500">
                     {{ formatDate(session.start_time) }} at {{ formatTime(session.start_time) }}
                   </p>
                 </div>
-                <div class="text-right">
+                <div class="text-right flex-shrink-0">
                   <span class="font-bold text-gray-900">${{ session.price }}</span>
                 </div>
               </div>

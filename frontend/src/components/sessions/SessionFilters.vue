@@ -1,33 +1,29 @@
 <template>
-  <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-8 mb-8 border border-gray-200 shadow-sm">
-    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
-      <!-- Filter Title -->
+  <div class="rounded-2xl bg-white border border-gray-200 shadow p-6 space-y-8">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
       <div>
-        <h3 class="text-2xl font-bold text-gray-900 mb-2">Filter Sessions</h3>
-        <p class="text-gray-600">Find the perfect training session for you</p>
+        <h2 class="text-xl font-semibold text-gray-900">Filter Sessions</h2>
+        <p class="text-sm text-gray-500">Find the perfect training session for you</p>
       </div>
-
-      <!-- Clear Filters Button -->
       <button
         v-if="hasActiveFilters"
         @click="clearFilters"
-        class="btn-ghost text-sm bg-white border border-gray-200 hover:bg-gray-50"
+        class="text-sm px-4 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 transition"
       >
         Clear All Filters
       </button>
     </div>
 
-    <!-- Filter Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
-      <!-- Session Type Filter -->
-      <div>
-        <label class="block text-sm font-bold text-gray-700 mb-3">
-          Session Type
-        </label>
+    <!-- Filters -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+      <!-- Session Type -->
+      <div class="space-y-1">
+        <label class="text-sm font-medium text-gray-700">Session Type</label>
         <select
           v-model="localFilters.type"
           @change="updateFilters"
-          class="input-field bg-white"
+          class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-black focus:outline-none"
         >
           <option value="">All Types</option>
           <option
@@ -40,15 +36,13 @@
         </select>
       </div>
 
-      <!-- Trainer Filter -->
-      <div>
-        <label class="block text-sm font-bold text-gray-700 mb-3">
-          Trainer
-        </label>
+      <!-- Trainer -->
+      <div class="space-y-1">
+        <label class="text-sm font-medium text-gray-700">Trainer</label>
         <select
           v-model="localFilters.trainer_id"
           @change="updateFilters"
-          class="input-field bg-white"
+          class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-black focus:outline-none"
         >
           <option :value="null">All Trainers</option>
           <option
@@ -61,112 +55,82 @@
         </select>
       </div>
 
-      <!-- Date Range -->
-      <div>
-        <label class="block text-sm font-bold text-gray-700 mb-3">
-          From Date
-        </label>
+      <!-- Date From -->
+      <div class="space-y-1">
+        <label class="text-sm font-medium text-gray-700">From Date</label>
         <input
+          type="date"
           v-model="localFilters.date_from"
-          type="date"
           @change="updateFilters"
-          class="input-field bg-white"
+          class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-black focus:outline-none"
         />
       </div>
 
-      <div>
-        <label class="block text-sm font-bold text-gray-700 mb-3">
-          To Date
-        </label>
+      <!-- Date To -->
+      <div class="space-y-1">
+        <label class="text-sm font-medium text-gray-700">To Date</label>
         <input
+          type="date"
           v-model="localFilters.date_to"
-          type="date"
           @change="updateFilters"
-          class="input-field bg-white"
+          class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-black focus:outline-none"
         />
       </div>
-    </div>
 
-    <!-- Price Range -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-      <div>
-        <label class="block text-sm font-bold text-gray-700 mb-3">
-          Min Price
-        </label>
+      <!-- Min Price -->
+      <div class="space-y-1">
+        <label class="text-sm font-medium text-gray-700">Min Price</label>
         <input
-          v-model.number="localFilters.min_price"
           type="number"
+          min="0"
           placeholder="0"
-          min="0"
+          v-model.number="localFilters.min_price"
           @change="updateFilters"
-          class="input-field bg-white"
+          class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-black focus:outline-none"
         />
       </div>
 
-      <div>
-        <label class="block text-sm font-bold text-gray-700 mb-3">
-          Max Price
-        </label>
+      <!-- Max Price -->
+      <div class="space-y-1">
+        <label class="text-sm font-medium text-gray-700">Max Price</label>
         <input
-          v-model.number="localFilters.max_price"
           type="number"
-          placeholder="1000"
           min="0"
+          placeholder="1000"
+          v-model.number="localFilters.max_price"
           @change="updateFilters"
-          class="input-field bg-white"
+          class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-black focus:outline-none"
         />
       </div>
     </div>
 
-    <!-- Active Filters Display -->
-    <div v-if="hasActiveFilters" class="mt-8 pt-6 border-t border-gray-200">
-      <h4 class="text-sm font-bold text-gray-700 mb-4">Active Filters:</h4>
-      <div class="flex flex-wrap gap-3">
-        <span
-          v-if="localFilters.type"
-          class="badge badge-neutral"
-        >
+    <!-- Active Filters -->
+    <div v-if="hasActiveFilters" class="pt-4 border-t border-gray-200">
+      <h3 class="text-sm font-semibold text-gray-700 mb-3">Active Filters:</h3>
+      <div class="flex flex-wrap gap-2">
+        <span v-if="localFilters.type" class="px-3 py-1 text-xs rounded-full bg-gray-100 text-gray-700">
           Type: {{ localFilters.type }}
         </span>
-        
-        <span
-          v-if="localFilters.trainer_id"
-          class="badge badge-neutral"
-        >
+        <span v-if="localFilters.trainer_id" class="px-3 py-1 text-xs rounded-full bg-gray-100 text-gray-700">
           Trainer: {{ getTrainerName(localFilters.trainer_id) }}
         </span>
-        
-        <span
-          v-if="localFilters.date_from"
-          class="badge badge-neutral"
-        >
+        <span v-if="localFilters.date_from" class="px-3 py-1 text-xs rounded-full bg-gray-100 text-gray-700">
           From: {{ formatDate(localFilters.date_from) }}
         </span>
-        
-        <span
-          v-if="localFilters.date_to"
-          class="badge badge-neutral"
-        >
+        <span v-if="localFilters.date_to" class="px-3 py-1 text-xs rounded-full bg-gray-100 text-gray-700">
           To: {{ formatDate(localFilters.date_to) }}
         </span>
-        
-        <span
-          v-if="localFilters.min_price"
-          class="badge badge-neutral"
-        >
+        <span v-if="localFilters.min_price !== null" class="px-3 py-1 text-xs rounded-full bg-gray-100 text-gray-700">
           Min: ${{ localFilters.min_price }}
         </span>
-        
-        <span
-          v-if="localFilters.max_price"
-          class="badge badge-neutral"
-        >
+        <span v-if="localFilters.max_price !== null" class="px-3 py-1 text-xs rounded-full bg-gray-100 text-gray-700">
           Max: ${{ localFilters.max_price }}
         </span>
       </div>
     </div>
   </div>
 </template>
+
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'

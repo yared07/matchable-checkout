@@ -10,29 +10,30 @@
               Book your personal training sessions for padel, fitness, or tennis
             </p>
           </div>
-          
-          <!-- Cart Summary -->
-          <div class="mt-6 lg:mt-0">
-            <div class="bg-black text-white rounded-xl p-6 shadow-lg">
-              <div class="flex items-center justify-between">
-                <div>
-                  <p class="text-sm font-medium text-gray-300">
-                    {{ bookingStore.selectedSessions.length }} session{{ bookingStore.selectedSessions.length !== 1 ? 's' : '' }} selected
-                  </p>
-                  <p class="text-2xl font-bold text-white">
-                    Total: ${{ bookingStore.totalAmount.toFixed(2) }}
-                  </p>
-                </div>
-                <button
-                  v-if="bookingStore.selectedSessions.length > 0"
-                  @click="proceedToBooking"
-                  class="btn-secondary"
-                >
-                  Proceed to Booking
-                </button>
-              </div>
-            </div>
-          </div>
+         <!-- Cart Summary -->
+<div class="mt-6 lg:mt-0">
+  <div class="bg-black text-white rounded-lg px-4 py-3 shadow-md">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+      <div>
+        
+        <p class="text-lg font-semibold text-white">
+          Total: ${{ bookingStore.totalAmount.toFixed(2) }}
+        </p>
+      </div>
+      <button
+        v-if="bookingStore.selectedSessions.length > 0"
+        @click="proceedToBooking"
+        class="px-4 py-2 text-sm font-medium bg-white text-black rounded-md hover:bg-gray-200 transition"
+      >
+        Proceed to Booking
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
+
         </div>
       </div>
     </div>
